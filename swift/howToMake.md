@@ -2,6 +2,16 @@
 
 カスタードファイルはjson形式のデータです。拡張子は`txt`, `json`, `custard`のうちどれかである必要があります。
 
+## サンプル
+
+以下のコマンドでサンプルを実行できます。
+
+```bash
+swift run samples hieroglyphs
+```
+
+これを実行すると`results/hieroglyphs.json`が作られます。
+
 ## キーの記述
 
 キーボードでキーは最も大切な要素です。CustardKitではキーは次のように記述します。
