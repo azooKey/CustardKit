@@ -32,6 +32,17 @@ class TestActions(unittest.TestCase):
         }
         self.assertEqual(expected_json, actual)
 
+    def test_TransliterateAction(self):
+        """test method for Transliterate
+        """
+        actual = to_json(TransliterateAction(
+            kana=KanaTransliteration.hiragana))
+        expected_json = {
+            "type": "transliterate",
+            "kana": "hiragana"
+        }
+        self.assertEqual(expected_json, actual)
+
     def test_MoveTabAction(self):
         """test method for MoveTabAction
         """

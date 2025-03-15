@@ -1029,6 +1029,15 @@ public extension CandidateSelection {
     }
 }
 
+public struct TransliterationKeyValues: Codable, Equatable, Hashable, Sendable {
+    public enum KanaTrasnliteration: String, Codable, Equatable, Hashable, Sendable {
+        case katakana
+        case hiragana
+        case hankakukatakana
+    }
+    public var kana: KanaTrasnliteration
+}
+
 /// - アクション
 /// - actions done in key pressing
 public enum CodableActionData: Codable, Hashable, Sendable {
@@ -1044,6 +1053,9 @@ public enum CodableActionData: Codable, Hashable, Sendable {
 
     /// - replace string at the trailing of cursor following to specified table
     case replaceLastCharacters([String: String])
+
+    /// - transliterate input to others
+    case transliterate(TransliterationKeyValues)
 
     /// - delete action specified count of characters
     case delete(Int)
@@ -1102,6 +1114,7 @@ public extension CodableActionData {
         case direction, targets
         case scheme_type, target
         case selection
+        case kana
     }
 
     private enum ValueType: String, Codable {
@@ -1109,6 +1122,7 @@ public extension CodableActionData {
         case paste
         case replace_default
         case replace_last_characters
+        case transliterate
         case delete
         case smart_delete
         case smart_delete_default
@@ -1139,6 +1153,7 @@ public extension CodableActionData {
         case .moveTab: return .move_tab
         case .replaceDefault: return .replace_default
         case .replaceLastCharacters: return .replace_last_characters
+        case .transliterate: return .transliterate
         case .smartDelete: return .smart_delete
         case .smartDeleteDefault: return .smart_delete_default
         case .smartMoveCursor: return .smart_move_cursor
@@ -1205,6 +1220,8 @@ public extension CodableActionData {
             try container.encode(value.target, forKey: .target)
         case let .selectCandidate(value):
             try container.encode(value, forKey: .selection)
+        case let .transliterate(value):
+            try container.encode(value.kana, forKey: .kana)
         case let .moveTab(value):
             try CodableTabArgument(tab: value).containerEncode(container: &container)
         case .dismissKeyboard, .enableResizingMode, .toggleTabBar, .toggleCursorBar, .toggleCapsLockState, .complete, .smartDeleteDefault, .replaceDefault, .paste: break
@@ -1223,6 +1240,9 @@ public extension CodableActionData {
         case .replace_last_characters:
             let value = try container.decode([String: String].self, forKey: .table)
             self = .replaceLastCharacters(value)
+        case .transliterate:
+            let kana = try container.decode(TransliterationKeyValues.KanaTrasnliteration.self, forKey: .kana)
+            self = .transliterate(.init(kana: kana))
         case .delete:
             let value = try container.decode(Int.self, forKey: .count)
             self = .delete(value)

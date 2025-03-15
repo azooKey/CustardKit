@@ -58,6 +58,29 @@ final class DecodeCodableActionTest: XCTestCase {
         }
     }
 
+    func testDecodeTransliterate() {
+        do {
+            let target = """
+            {
+                "type": "transliterate",
+                "kana": "katakana"
+            }
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .transliterate(.init(kana: .katakana)))
+        }
+        do {
+            let target = """
+            {
+                "type": "transliterate",
+                "kana": "hiragana"
+            }
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .transliterate(.init(kana: .hiragana)))
+        }
+    }
+
     func testDecodeDelete() {
         do {
             let target = """

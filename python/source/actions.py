@@ -70,6 +70,26 @@ class ReplaceDefaultAction(metaclass=ActionMeta):
 
 
 @unique
+class KanaTransliteration(str, Enum):
+    katakana = "katakana"
+    hiragana = "hiragana"
+    hankakukatakana = "hankakukatakana"
+
+class TransliterateAction(metaclass=ActionMeta):
+    type = "transliterate"
+
+    def __init__(self, kana: KanaTransliteration):
+        """
+        入力の文字種を変換するアクション
+        Parameters
+        ----------
+        kana: KanaTransliteration
+            カナ文字の変更先の文字種を指定する
+        """
+        self.kana = kana
+
+
+@unique
 class TabType(str, Enum):
     system = "system"
     custom = "custom"

@@ -86,6 +86,7 @@ azooKeyでは`InputAction`の他にいくつかの動作を行うことができ
 | CompleteAction               | なし                                             | 変換を確定します                                                          |
 | ReplaceLastCharactersAction | table: {str: str}                                | カーソル文頭方向の文字列を引数のtableに基づいて置換します。例えばカーソル文頭方向の文字列が`"abcdef"`であり、テーブルに`"def":":="`が指定されている場合は`"abc:="`と置換されます。 |
 | ReplaceDefaultAction         | なし                                             | azooKeyが標準で用いている「濁点・半濁点・小書き・大文字・小文字」の切り替えアクションです。 |
+| Transliterate         | kana: str                                             | 入力の仮名文字を全てhiragana/katakana/hankakukatakanaのいずれかで置き換えます。 |
 | SmartDeleteAction            | direction: ScanDirection<br />targets: list[str] | directionに`ScanDirection.forward`または`ScanDirection.backward`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまで削除を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`direction = ScanDirection.backward, target = [","]`であった場合、この操作の実行後に`" it is"`が削除されます。 |
 | SmartDeleteDefaultAction    | なし                                             | azooKeyが標準で用いている「文頭まで削除」のアクションです。  |
 | SmartMoveCursorAction       | direction: ScanDirection<br />target: list[str]  | directionに`ScanDirection.forward`または`ScanDirection.backward`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまでカーソルの移動を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`direction = ScanDirection.backward, target = [","]`であった場合、この操作の実行後にカーソルが`"Yes,| it is"`まで移動します。 |

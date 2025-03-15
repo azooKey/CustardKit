@@ -21,6 +21,12 @@ final class EncodeCodableActionTest: XCTestCase {
         XCTAssertEqual(target.quickEncodeDecode(), target)
     }
 
+    func testEncodeTransliterate() {
+        XCTAssertEqual(CodableActionData.transliterate(.init(kana: .hankakukatakana)).quickEncodeDecode(), .transliterate(.init(kana: .hankakukatakana)))
+        XCTAssertEqual(CodableActionData.transliterate(.init(kana: .hiragana)).quickEncodeDecode(), .transliterate(.init(kana: .hiragana)))
+        XCTAssertEqual(CodableActionData.transliterate(.init(kana: .katakana)).quickEncodeDecode(), .transliterate(.init(kana: .katakana)))
+    }
+
     func testEncodeDelete() {
         XCTAssertEqual(CodableActionData.delete(9).quickEncodeDecode(), .delete(9))
         XCTAssertEqual(CodableActionData.delete(-1).quickEncodeDecode(), .delete(-1))
