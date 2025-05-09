@@ -203,6 +203,19 @@ class TestActions(unittest.TestCase):
                                  smart_move_cursor, dismiss_keyboard])
 
         expected_json = {
+            "duration": "normal",
+            "start": [to_json(input), to_json(delete)],
+            "repeat": [to_json(smart_move_cursor), to_json(dismiss_keyboard)]
+        }
+
+        self.assertEqual(expected_json, to_json(action))
+
+        action = LongpressAction(duration=LongpressDuration.light,
+                                 start=[input, delete], repeat=[
+                                 smart_move_cursor, dismiss_keyboard])
+
+        expected_json = {
+            "duration": "light",
             "start": [to_json(input), to_json(delete)],
             "repeat": [to_json(smart_move_cursor), to_json(dismiss_keyboard)]
         }

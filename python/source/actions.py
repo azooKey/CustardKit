@@ -241,17 +241,26 @@ class PasteAction(metaclass=ActionMeta):
     """
     type = "paste"
 
+
+@unique
+class LongpressDuration(str, Enum):
+    normal = "normal"
+    light = "light"
+
+
 class LongpressAction(object):
-    def __init__(self, start: list[Action] = [], repeat: list[Action] = []):
+    def __init__(self, duration: LongpressDuration = LongpressDuration.normal, start: list[Action] = [], repeat: list[Action] = []):
         """
         イニシャライザ
         Parameters
         ----------
+        duration: LongpressDuration = .normal
+            長押しが成立する判定までにかかる時間の目安
         start: list[dict] = []
             長押しが成立した段階で実行されるアクションのリスト
         repeat: list[dict] = []
             長押しが成立している間繰り返し実行されるアクションのリスト
         """
-
+        self.duration = duration
         self.start = start
         self.repeat = repeat
