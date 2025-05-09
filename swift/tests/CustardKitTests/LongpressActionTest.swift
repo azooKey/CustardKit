@@ -16,7 +16,27 @@ final class CodableLongpressActionTest: XCTestCase {
             }
             """
         let decoded = CodableLongpressActionData.quickDecode(target: target)
-        XCTAssertEqual(decoded, .init(start: [.input("ブルーホール")], repeat: [.input("青")]))
+        // `duration: .normal`は省略可能
+        XCTAssertEqual(decoded, .init(duration: .normal, start: [.input("ブルーホール")], repeat: [.input("青")]))
+    }
+
+    func testDecodeLongpressActionWithDurationSpec() {
+        let target = """
+            {
+                "duration": "light",
+                "start": [{
+                    "type": "input",
+                    "text": "藍色空間"
+                }],
+                "repeat": [{
+                    "type": "input",
+                    "text": "自然選択"
+                }]
+            }
+            """
+        let decoded = CodableLongpressActionData.quickDecode(target: target)
+        // `duration: .normal`は省略可能
+        XCTAssertEqual(decoded, .init(duration: .light, start: [.input("藍色空間")], repeat: [.input("自然選択")]))
     }
 
     func testEncodeLongpressAction() {

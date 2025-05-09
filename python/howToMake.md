@@ -101,12 +101,11 @@ azooKeyでは`InputAction`の他にいくつかの動作を行うことができ
 
 ```python
 class LongpressAction(object):
-    def __init__(self, start: list[Action] = [], repeat: list[Action] = []):
-        self.start = start
-        self.repeat = repeat
+    def __init__(self, duration: LongpressDuration = LongpressDuration.normal. start: list[Action] = [], repeat: list[Action] = []):
+        pass
 ```
 
-ここで`start`は長押しの開始時に一度だけ実行される動作、`repeat`は長押しの間繰り返し実行される動作です。それぞれ上で書いたものと同様にアクションの配列を指定します。
+ここで`start`は長押しの開始時に一度だけ実行される動作、`repeat`は長押しの間繰り返し実行される動作です。それぞれ上で書いたものと同様にアクションの配列を指定します。また、`duration`は長押しと判定されるまでの時間で、`LongpressDuration.light`を指定するとデフォルトの`LongpressDuration.normal`より短い長押し時間でアクションが実行されるようになります。
 
 #### システムタブ
 
