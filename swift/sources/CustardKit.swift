@@ -13,13 +13,6 @@ extension Encodable {
     }
 }
 
-public enum FlickDirection: String, Codable, Sendable {
-    case left
-    case top
-    case right
-    case bottom
-}
-
 /// - 変換対象の言語を指定します。
 /// - specify language to convert
 public enum CustardLanguage: String, Codable, Sendable {
