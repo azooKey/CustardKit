@@ -102,13 +102,14 @@ azooKeyでは`input`の他にいくつかの動作を行うことができます
 続く引数の`longpress_actions`は`CodableLongpressActionData`型の値です。定義は以下の通りで、`start`と`repeat`にそれぞれ行うべき動作を指定します。
 
 ```Swift
-struct CodableLongpressActionData{
+struct CodableLongpressActionData {
+    var duration: LongpressDuration
     var start: [CodableActionData]
     var `repeat`: [CodableActionData]
 }
 ```
 
-ここで`start`は長押しの開始時に一度だけ実行される動作、`repeat`は長押しの間繰り返し実行される動作です。それぞれ上で書いたものと同様にアクションの配列を指定します。
+ここで`start`は長押しの開始時に一度だけ実行される動作、`repeat`は長押しの間繰り返し実行される動作です。それぞれ上で書いたものと同様にアクションの配列を指定します。また、`duration`は長押しと判定されるまでの時間で、`.light`を指定するとデフォルトの`.normal`より短い長押し時間でアクションが実行されるようになります。
 
 特に長押しにおいて動作を行わせない場合は`.none`を指定します。これは`start`と`repeat`にともに空の配列を指定したものです。
 
