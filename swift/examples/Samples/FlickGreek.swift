@@ -51,7 +51,7 @@ extension Samples {
                     .gridFit(.init(x: 1, y: 3)): .custom(
                         .init(
                             design: .init(label: .text("a/A"), color: .normal),
-                            press_actions: [.replaceDefault],
+                            press_actions: [.replaceDefault(.default)],
                             longpress_actions: .none,
                             variations: [
                                 .init(

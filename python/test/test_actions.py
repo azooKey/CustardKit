@@ -139,15 +139,20 @@ class TestActions(unittest.TestCase):
         }
         self.assertEqual(expected_json, actual)
 
-    def test_NoArgumentsAction(self):
-        """test method for actions without arguments
+    def test_ReplaceDefaultAction(self):
+        """test method for ReplaceDefault
         """
-        actual = to_json(ReplaceDefaultAction())
+        actual = to_json(ReplaceDefaultAction(ReplaceType.handakuten, fallbacks=[ReplaceType.default]))
         expected_json = {
             "type": "replace_default",
+            "replace_type": "handakuten",
+            "fallbacks": ["default"]
         }
         self.assertEqual(expected_json, actual)
 
+    def test_NoArgumentsAction(self):
+        """test method for actions without arguments
+        """
         actual = to_json(SmartDeleteDefaultAction())
         expected_json = {
             "type": "smart_delete_default",

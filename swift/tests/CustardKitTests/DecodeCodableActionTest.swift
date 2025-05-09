@@ -208,7 +208,21 @@ final class DecodeCodableActionTest: XCTestCase {
             {"type": "replace_default"}
             """
             let decoded = CodableActionData.quickDecode(target: target)
-            XCTAssertEqual(decoded, .replaceDefault)
+            XCTAssertEqual(decoded, .replaceDefault(.default))
+        }
+        do {
+            let target = """
+            {"type": "replace_default", "replace_type": "dakuten"}
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .replaceDefault(.init(type: .dakuten, fallbacks: [])))
+        }
+        do {
+            let target = """
+            {"type": "replace_default", "replace_type": "dakuten", "fallbacks": ["default"]}
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .replaceDefault(.init(type: .dakuten, fallbacks: [.default])))
         }
         do {
             let target = """

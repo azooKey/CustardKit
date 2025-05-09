@@ -1,4 +1,5 @@
 import Foundation
+import XCTest
 extension Encodable where Self: Decodable {
     public func quickEncode() -> Data? {
         let encoder = JSONEncoder()
@@ -40,4 +41,8 @@ extension Encodable where Self: Decodable {
     public func quickEncodeDecode() throws -> Self {
         return try Self.quickDecode(target: self.quickEncode())
     }
+}
+
+func XCTAssertQuickEncodeDecode(_ value: some Encodable & Decodable & Equatable) {
+    XCTAssertEqual(value.quickEncodeDecode(), value)
 }
