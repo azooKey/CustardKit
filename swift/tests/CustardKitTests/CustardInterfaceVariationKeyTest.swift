@@ -29,7 +29,7 @@ final class CustardInterfaceVariationKeyTest: XCTestCase {
 
     func testEncode() {
         do {
-            let target = CustardInterfaceVariationKey.init(design: .init(label: .systemImage("que")), press_actions: [.dismissKeyboard, .complete, .replaceDefault], longpress_actions: .none)
+            let target = CustardInterfaceVariationKey.init(design: .init(label: .systemImage("que")), press_actions: [.dismissKeyboard, .complete, .replaceDefault(.default)], longpress_actions: .none)
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
         do {

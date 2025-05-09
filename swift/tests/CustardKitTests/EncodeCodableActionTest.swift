@@ -58,8 +58,13 @@ final class EncodeCodableActionTest: XCTestCase {
         XCTAssertEqual(CodableActionData.moveTab(.system(.flick_numbersymbols)).quickEncodeDecode(), .moveTab(.system(.flick_numbersymbols)))
     }
 
+    func testEncodeReplaceDefault() {
+        XCTAssertQuickEncodeDecode(CodableActionData.replaceDefault(.default))
+        XCTAssertQuickEncodeDecode(CodableActionData.replaceDefault(.init(type: .default, fallbacks: [.dakuten])).quickEncodeDecode())
+        XCTAssertQuickEncodeDecode(CodableActionData.replaceDefault(.init(type: .handakuten, fallbacks: [.default])))
+    }
+
     func testEncodeNoArgumentActions() {
-        XCTAssertEqual(CodableActionData.replaceDefault.quickEncodeDecode(), .replaceDefault)
         XCTAssertEqual(CodableActionData.smartDeleteDefault.quickEncodeDecode(), .smartDeleteDefault)
         XCTAssertEqual(CodableActionData.complete.quickEncodeDecode(), .complete)
         XCTAssertEqual(CodableActionData.enableResizingMode.quickEncodeDecode(), .enableResizingMode)

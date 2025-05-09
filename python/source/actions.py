@@ -61,12 +61,31 @@ class ReplaceLastCharactersAction(metaclass=ActionMeta):
         """
         self.table = table
 
+@unique
+class ReplaceType(str, Enum):
+    default = "default"
+    dakuten = "dakuten"
+    handakuten = "handakuten"
+    kogaki = "kogaki"
+
 
 class ReplaceDefaultAction(metaclass=ActionMeta):
     """
     azooKeyデフォルトの置換アクション
     """
     type = "replace_default"
+    def __init__(self, replace_type: ReplaceType = ReplaceType.default, fallbacks: list[ReplaceType] = []):
+        """
+        最後の文字を置換するアクション
+        Parameters
+        ----------
+        replace_type: ReplaceType
+            置換の種類。
+        fallbacks: list[ReplaceType]
+            最初に設定した置換が成功しなかった場合のフォールバック
+        """
+        self.replace_type = replace_type
+        self.fallbacks = fallbacks
 
 
 @unique

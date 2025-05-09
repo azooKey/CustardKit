@@ -147,6 +147,33 @@ public extension CandidateSelection {
     }
 }
 
+public struct ReplaceBehavior: Hashable, Sendable {
+    public init(type: ReplaceBehavior.ReplaceType, fallbacks: [ReplaceBehavior.ReplaceType] = []) {
+        self.type = type
+        self.fallbacks = fallbacks
+    }
+    
+    public static let `default` = Self(type: .default, fallbacks: [])
+    public enum ReplaceType: String, Codable, Hashable, Sendable {
+        /// デフォルト。
+        /// - a→A→a
+        /// - あ→ぁ→あ
+        /// - は→ば→ぱ→は
+        /// - つ→っ→づ→つ
+        case `default`
+        /// 濁点化のみ行う
+        case dakuten
+        /// 半濁点化のみ行う
+        case handakuten
+        /// 小書き化のみ行う
+        case kogaki
+    }
+    /// 置換の振る舞い
+    public var type: ReplaceType
+    /// 置換が行われなかった場合、次に試す置換
+    public var fallbacks: [ReplaceType]
+}
+
 /// - アクション
 /// - actions done in key pressing
 public enum CodableActionData: Codable, Hashable, Sendable {
@@ -158,7 +185,7 @@ public enum CodableActionData: Codable, Hashable, Sendable {
     case paste
 
     /// - exchange character "あ→ぁ", "は→ば", "a→A"
-    case replaceDefault
+    case replaceDefault(ReplaceBehavior)
 
     /// - replace string at the trailing of cursor following to specified table
     case replaceLastCharacters([String: String])
@@ -220,6 +247,7 @@ public extension CodableActionData {
         case direction, targets
         case scheme_type, target
         case selection
+        case replace_type, fallbacks
     }
 
     private enum ValueType: String, Codable {
@@ -311,6 +339,14 @@ public extension CodableActionData {
         switch self {
         case let .input(value):
             try container.encode(value, forKey: .text)
+        case let .replaceDefault(value):
+            // デフォルト値以外の場合のみ明示的にエンコード
+            if value.type != .default {
+                try container.encode(value.type, forKey: .replace_type)
+            }
+            if !value.fallbacks.isEmpty {
+                try container.encode(value.fallbacks, forKey: .fallbacks)
+            }
         case let .replaceLastCharacters(value):
             try container.encode(value, forKey: .table)
         case let .delete(value), let .moveCursor(value):
@@ -325,7 +361,7 @@ public extension CodableActionData {
             try container.encode(value, forKey: .selection)
         case let .moveTab(value):
             try CodableTabArgument(tab: value).containerEncode(container: &container)
-        case .dismissKeyboard, .enableResizingMode, .toggleTabBar, .toggleCursorBar, .toggleCapsLockState, .complete, .smartDeleteDefault, .replaceDefault, .paste: break
+        case .dismissKeyboard, .enableResizingMode, .toggleTabBar, .toggleCursorBar, .toggleCapsLockState, .complete, .smartDeleteDefault, .paste: break
         }
     }
 
@@ -337,7 +373,9 @@ public extension CodableActionData {
             let value = try container.decode(String.self, forKey: .text)
             self = .input(value)
         case .replace_default:
-            self = .replaceDefault
+            let replaceType = try container.decodeIfPresent(ReplaceBehavior.ReplaceType.self, forKey: .replace_type) ?? .default
+            let fallbacks = try container.decodeIfPresent([ReplaceBehavior.ReplaceType].self, forKey: .fallbacks) ?? []
+            self = .replaceDefault(.init(type: replaceType, fallbacks: fallbacks))
         case .replace_last_characters:
             let value = try container.decode([String: String].self, forKey: .table)
             self = .replaceLastCharacters(value)
