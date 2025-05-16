@@ -229,7 +229,7 @@ public enum CustardKeyPositionSpecifier: Hashable, Sendable {
 /// - gridFitのレイアウトを利用した際のキーの位置指定子に与える値
 /// - values in position specifier when you use grid fit layout
 public struct GridFitPositionSpecifier: Codable, Hashable, Sendable {
-    public init(x: Double, y: Double, width: Double = 1, height: Double = 1) {
+    public init(x: Int, y: Int, width: Double = 1, height: Double = 1) {
         self.x = x
         self.y = y
         self.width = width
@@ -237,19 +237,19 @@ public struct GridFitPositionSpecifier: Codable, Hashable, Sendable {
     }
 
     public init(x: Int, y: Int, width: Int = 1, height: Int = 1) {
-        self.x = Double(x)
-        self.y = Double(y)
+        self.x = x
+        self.y = y
         self.width = Double(width)
         self.height = Double(height)
     }
 
     /// - 横方向の位置(左をゼロとする)
     /// - horizontal position (leading edge is zero)
-    public var x: Double
+    public var x: Int
 
     /// - 縦方向の位置(上をゼロとする)
     /// - vertical positon (top edge is zero)
-    public var y: Double
+    public var y: Int
 
     public var width: Double
     public var height: Double
@@ -260,8 +260,8 @@ public struct GridFitPositionSpecifier: Codable, Hashable, Sendable {
 
     public init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.x = try container.decode(Double.self, forKey: .x)
-        self.y = try container.decode(Double.self, forKey: .y)
+        self.x = try container.decode(Int.self, forKey: .x)
+        self.y = try container.decode(Int.self, forKey: .y)
         let width = try container.decode(Double.self, forKey: .width)
         let height = try container.decode(Double.self, forKey: .height)
         (self.width, self.height) = (abs(width), abs(height))
