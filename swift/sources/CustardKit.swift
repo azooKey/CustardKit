@@ -236,6 +236,7 @@ public struct GridFitPositionSpecifier: Codable, Hashable, Sendable {
         self.height = height
     }
 
+    @_disfavoredOverload
     public init(x: Int, y: Int, width: Int = 1, height: Int = 1) {
         self.x = x
         self.y = y
