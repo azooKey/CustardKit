@@ -89,6 +89,23 @@ class ReplaceDefaultAction(metaclass=ActionMeta):
 
 
 @unique
+class CharacterForm(str, Enum):
+    hiragana = "hiragana"
+    katakana = "katakana"
+    halfwidth_katakana = "halfwidth_katakana"
+    uppercase = "uppercase"
+    lowercase = "lowercase"
+
+
+class CompleteCharacterFormAction(metaclass=ActionMeta):
+    type = "complete_character_form"
+
+    def __init__(self, forms: list[CharacterForm]):
+        """指定した形式に変換して確定するアクション"""
+        self.forms = forms
+
+
+@unique
 class TabType(str, Enum):
     system = "system"
     custom = "custom"

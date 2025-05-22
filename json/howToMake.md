@@ -96,6 +96,7 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 | move_tab                | tab_type: str<br />identifier: str | identifierで指定したタブに移動します。tab_typeが`"system"`の場合はazooKeyが標準で搭載しているタブに移動し、`"custom"`の場合はidentifierを持ったカスタムタブに移動します。システムタブとして指定できる値は後に記述します。 |
 | select_candidate       | type: str<br /> value: int          | 引数で指定した候補を選択状態にします。typeは4種類あります。`"first"`（最初の候補）と`"last"`（最後の候補）の場合は`"value"`の指定は不要です。`"exact"`（value個目の候補を選択）と`"offset"`（value個隣の候補を選択）の場合は`"value"`に数値を指定してください。 |
 | complete              | なし              | 変換を確定します                                          |
+| complete_character_form | forms: [str] | formsで指定した文字種に変換してから確定します。指定できる値は`hiragana`, `katakana`, `halfwidth_katakana`, `uppercase`, `lowercase`です。 |
 | replace_last_characters | table: {str: str}                  | カーソル文頭方向の文字列を引数のtableに基づいて置換します。例えばカーソル文頭方向の文字列が`"abcdef"`であり、テーブルに`"def":":="`が指定されている場合は`"abc:="`と置換されます。 |
 | replace_default         | replace_type: str, dakuten, handakutenなど<br />fallbacks: [str] | azooKeyが標準で用いている「濁点・半濁点・小書き・大文字・小文字」の切り替えアクションです。 |
 | smart_delete            | direction: str<br />targets: [str] | directionに`"forward"`または`"backward"`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまで削除を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`"direction": "backward", "targets": [","]`であった場合、この操作の実行後に`" it is"`が削除されます。 |

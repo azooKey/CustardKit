@@ -64,6 +64,12 @@ final class EncodeCodableActionTest: XCTestCase {
         XCTAssertQuickEncodeDecode(CodableActionData.replaceDefault(.init(type: .handakuten, fallbacks: [.default])))
     }
 
+    func testEncodeCompleteCharacterForm() {
+        let target = CodableActionData.completeCharacterForm([.katakana, .uppercase])
+        XCTAssertEqual(target.quickEncodeDecode(), target)
+        XCTAssertEqual(CodableActionData.completeCharacterForm([.hiragana]).quickEncodeDecode(), .completeCharacterForm([.hiragana]))
+    }
+
     func testEncodeNoArgumentActions() {
         XCTAssertEqual(CodableActionData.smartDeleteDefault.quickEncodeDecode(), .smartDeleteDefault)
         XCTAssertEqual(CodableActionData.complete.quickEncodeDecode(), .complete)
@@ -82,6 +88,7 @@ final class EncodeCodableActionTest: XCTestCase {
         ("testEncodeMoveCursor", testEncodeMoveCursor),
         ("testEncodeSmartMoveCursor", testEncodeSmartMoveCursor),
         ("testEncodeMoveTab", testEncodeMoveTab),
+        ("testEncodeCompleteCharacterForm", testEncodeCompleteCharacterForm),
         ("testEncodeNoArgumentActions", testEncodeNoArgumentActions)
     ]
 }

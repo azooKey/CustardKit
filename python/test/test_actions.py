@@ -150,6 +150,22 @@ class TestActions(unittest.TestCase):
         }
         self.assertEqual(expected_json, actual)
 
+    def test_CompleteCharacterFormAction(self):
+        actual = to_json(CompleteCharacterFormAction([
+            CharacterForm.katakana, CharacterForm.uppercase]))
+        expected_json = {
+            "type": "complete_character_form",
+            "forms": [CharacterForm.katakana, CharacterForm.uppercase]
+        }
+        self.assertEqual(expected_json, actual)
+
+        actual = to_json(CompleteCharacterFormAction([CharacterForm.hiragana]))
+        expected_json = {
+            "type": "complete_character_form",
+            "forms": [CharacterForm.hiragana]
+        }
+        self.assertEqual(expected_json, actual)
+
     def test_NoArgumentsAction(self):
         """test method for actions without arguments
         """
