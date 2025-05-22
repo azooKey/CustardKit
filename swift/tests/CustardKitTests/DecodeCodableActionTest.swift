@@ -202,6 +202,29 @@ final class DecodeCodableActionTest: XCTestCase {
         }
     }
 
+    func testDecodeCompleteCharacterForm() {
+        do {
+            let target = """
+            {
+                "type": "complete_character_form",
+                "forms": ["katakana", "uppercase"]
+            }
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .completeCharacterForm([.katakana, .uppercase]))
+        }
+        do {
+            let target = """
+            {
+                "type": "complete_character_form",
+                "forms": ["hiragana"]
+            }
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .completeCharacterForm([.hiragana]))
+        }
+    }
+
     func testDecodeNoArgumentActions() {
         do {
             let target = """
@@ -311,6 +334,7 @@ final class DecodeCodableActionTest: XCTestCase {
         ("testDecodeMoveCursor", testDecodeMoveCursor),
         ("testDecodeSmartMoveCursor", testDecodeSmartMoveCursor),
         ("testDecodeMoveTab", testDecodeMoveTab),
+        ("testDecodeCompleteCharacterForm", testDecodeCompleteCharacterForm),
         ("testDecodeNoArgumentActions", testDecodeNoArgumentActions)
     ]
 }

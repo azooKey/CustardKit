@@ -174,6 +174,14 @@ public struct ReplaceBehavior: Hashable, Sendable {
     public var fallbacks: [ReplaceType]
 }
 
+public enum CharacterForm: String, Codable, Hashable, Sendable {
+    case hiragana
+    case katakana
+    case halfwidthKatakana = "halfwidth_katakana"
+    case uppercase
+    case lowercase
+}
+
 /// - アクション
 /// - actions done in key pressing
 public enum CodableActionData: Codable, Hashable, Sendable {
@@ -202,6 +210,9 @@ public enum CodableActionData: Codable, Hashable, Sendable {
 
     /// - select candidate to complete
     case selectCandidate(CandidateSelection)
+
+    /// - convert character form then complete current inputting words
+    case completeCharacterForm([CharacterForm])
 
     /// - complete current inputting words
     case complete
@@ -248,6 +259,7 @@ public extension CodableActionData {
         case scheme_type, target
         case selection
         case replace_type, fallbacks
+        case forms
     }
 
     private enum ValueType: String, Codable {
@@ -259,6 +271,7 @@ public extension CodableActionData {
         case smart_delete
         case smart_delete_default
         case select_candidate
+        case complete_character_form
         case complete
         case move_cursor
         case smart_move_cursor
@@ -276,6 +289,7 @@ public extension CodableActionData {
     private var key: ValueType {
         switch self {
         case .selectCandidate: return .select_candidate
+        case .completeCharacterForm: return .complete_character_form
         case .complete: return .complete
         case .delete: return .delete
         case .dismissKeyboard: return .dismiss_keyboard
@@ -359,6 +373,8 @@ public extension CodableActionData {
             try container.encode(value.target, forKey: .target)
         case let .selectCandidate(value):
             try container.encode(value, forKey: .selection)
+        case let .completeCharacterForm(value):
+            try container.encode(value, forKey: .forms)
         case let .moveTab(value):
             try CodableTabArgument(tab: value).containerEncode(container: &container)
         case .dismissKeyboard, .enableResizingMode, .toggleTabBar, .toggleCursorBar, .toggleCapsLockState, .complete, .smartDeleteDefault, .paste: break
@@ -391,6 +407,9 @@ public extension CodableActionData {
         case .select_candidate:
             let selection = try container.decode(CandidateSelection.self, forKey: .selection)
             self = .selectCandidate(selection)
+        case .complete_character_form:
+            let forms = try container.decode([CharacterForm].self, forKey: .forms)
+            self = .completeCharacterForm(forms)
         case .complete:
             self = .complete
         case .move_cursor:
