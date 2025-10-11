@@ -149,7 +149,7 @@ enum CodableTabData{
 | .flick_numbersymbols | フリック入力の数字・記号タブ                                 |
 | .qwerty_japanese[^2] | ローマ字入力の日本語タブ                                     |
 | .qwerty_english[^2]  | ローマ字入力の英語タブ                                       |
-| .qwerty_number[^2]   | ローマ字入力の数字タブ                                       |
+| .qwerty_numbers[^2]   | ローマ字入力の数字タブ                                       |
 | .qwerty_symbols[^2]  | ローマ字入力の記号タブ                                       |
 | .emoji_tab           | 絵文字タブ                                                |
 | .clipboard_history_tab | クリップボードの履歴タブ(フルアクセスが必要です)               |
@@ -499,4 +499,3 @@ do {
 
 [^2]: ここではpc_styleではなくqwertyと呼んでいます。これはこのタブの配列がqwertyであるからです。
 [^3]:  ここではqwerty_variationあるいはpc_style_variationではなくlongpress_variationと呼んでいます。variationがそれが現れる条件となる操作によって分類されるからです。
-
