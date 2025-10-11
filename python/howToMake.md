@@ -47,7 +47,7 @@ design = KeyDesign(
 | ---------------- | --------------- | ------------------------------------------------------------ |
 | TextLabel        | text: str       | 指定した文字をラベルとして表示します。                       |
 | MainAndSubLabel | main: str, sub: str | `main`に指定した1文字を1行目に大きめに、`sub`に指定した文字を2行目に小さめに表示します。 |
-| SystemImageLabel | identifier: str | 指定した名前の画像をラベルとして表示します。指定できる値は以下の通りです。<br />この画像はSFSymbolsから取得されます。 |
+| SystemImageLabel | identifier: str | 指定した名前の画像をラベルとして表示します。指定できる値の一例は以下の通りです。<br />この画像は[SFSymbols](https://developer.apple.com/sf-symbols/)から取得されます。 |
 
 <img src="../resource/symbols.png" style="zoom:15%;" />
 
