@@ -81,7 +81,7 @@ azooKeyでは`InputAction`の他にいくつかの動作を行うことができ
 | InputAction                   | text: str                                        | 引数textを入力します                                         |
 | DeleteAction                  | count: int                                       | (countの絶対値)文字を削除します。負の値が指定されている場合は文末方向に削除します。 |
 | MoveCursorAction             | count: int                                       | (countの絶対値)文字分カーソルを移動します。負の値が指定されている場合は文頭方向に移動します。 |
-| MoveTabAction               | tab_type: TabType<br />identifier: str           | identifierで指定したタブに移動します。tab_typeが`system`の場合はazooKeyが標準で搭載しているタブに移動し、`custom`の場合はidentifierを持ったカスタムタブに移動します。システムタブとして指定できる値は後に記述します。 |
+| MoveTabAction               | tab_type: "custom" | "system"<br />text: str           | textで指定したタブに移動します。tab_typeが`system`の場合はazooKeyが標準で搭載しているタブに移動し、`custom`の場合はtextを持ったカスタムタブに移動します。システムタブとして指定できる値は後に記述します。 |
 | SelectCandidateAction       | type: str<br /> value: int          | 引数で指定した候補を選択状態にします。typeは4種類あります。`"first"`（最初の候補）と`"last"`（最後の候補）の場合は`"value"`の指定は不要です。`"exact"`（value個目の候補を選択）と`"offset"`（value個隣の候補を選択）の場合は`"value"`に数値を指定してください。 |
 | CompleteAction               | なし                                             | 変換を確定します                                                          |
 | CompleteCharacterFormAction | forms: list[CharacterForm] | 入力中の文字列をformsで指定した形式に変換して確定します。 |
@@ -89,13 +89,13 @@ azooKeyでは`InputAction`の他にいくつかの動作を行うことができ
 | ReplaceDefaultAction         | replace_type: ReplaceType<br />fallbacks: list[ReplaceType] | azooKeyが標準で用いている「濁点・半濁点・小書き・大文字・小文字」の切り替えアクションです。 |
 | SmartDeleteAction            | direction: ScanDirection<br />targets: list[str] | directionに`ScanDirection.forward`または`ScanDirection.backward`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまで削除を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`direction = ScanDirection.backward, target = [","]`であった場合、この操作の実行後に`" it is"`が削除されます。 |
 | SmartDeleteDefaultAction    | なし                                             | azooKeyが標準で用いている「文頭まで削除」のアクションです。  |
-| SmartMoveCursorAction       | direction: ScanDirection<br />target: list[str]  | directionに`ScanDirection.forward`または`ScanDirection.backward`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまでカーソルの移動を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`direction = ScanDirection.backward, target = [","]`であった場合、この操作の実行後にカーソルが`"Yes,| it is"`まで移動します。 |
+| SmartMoveCursorAction       | direction: ScanDirection<br />targets: list[str]  | directionに`ScanDirection.forward`または`ScanDirection.backward`を指定します。targetsに指定した文字のいずれかがカーソル進行方向に現れるまでカーソルの移動を繰り返します。例えば文頭方向の文字列が`"Yes, it is"`であり、`direction = ScanDirection.backward, targets = [","]`であった場合、この操作の実行後にカーソルが`"Yes,\| it is"`まで移動します。 |
 | EnableResizingModeAction    | なし                                             | 片手モードの編集状態に移動します。編集状態ではキー操作などが行えないため、disable_resizing_modeは用意されていません。 |
 | ToggleCursorBarAction       | なし                                             | カーソルバーの表示をtoggleします。                           |
 | ToggleTabBarAction          | なし                                             | タブバーの表示をtoggleします。                               |
 | ToggleCapsLockStateAction  | なし                                             | caps lockをtoggleします。                                    |
 | DismissKeyboardAction        | なし                                             | キーボードを閉じます。                                       |
-| PasteKeyboardAction        | なし                                             | コピーしている文字列をペーストします。フルアクセスがない場合動作しません。                                       |
+| PasteAction        | なし                                             | コピーしている文字列をペーストします。フルアクセスがない場合動作しません。                                       |
 | LaunchApplicationAction      | scheme_type: Literal['azooKey', 'shortcuts']<br />target: str | scheme_typeで指定されたアプリケーションをscheme://(target)として開きます。scheme_typeには`"azooKey"`か`"shortcuts"`のみを指定できます。 |
 
 続く引数の`longpress_actions`は`LongpressAction`というオブジェクトで、ほぼ`press_actions`と同じです。
@@ -121,7 +121,7 @@ class LongpressAction(object):
 | flick_numbersymbols | フリック入力の数字・記号タブ                                 |
 | qwerty_japanese[^2] | ローマ字入力の日本語タブ                                     |
 | qwerty_english[^2]  | ローマ字入力の英語タブ                                       |
-| qwerty_number[^2]   | ローマ字入力の数字タブ                                       |
+| qwerty_numbers[^2]   | ローマ字入力の数字タブ                                       |
 | qwerty_symbols[^2]  | ローマ字入力の記号タブ                                       |
 | emoji_tab           | 絵文字タブ                                                |
 | clipboard_history_tab | クリップボードの履歴タブ(フルアクセスが必要です)               |
@@ -341,7 +341,7 @@ key = CustomKey.flickSimpleInputs(center = "あ", subs = ["い", "う", "え", "
 `CustomKey.flickSimpleInputAndLabels`では、フリックで入力する文字にもラベルを指定することができます。以下のように用いることができます。
 
 ```python
-key = CustomKey.flickSimpleInputAndLab(
+key = CustomKey.flickSimpleInputAndLabels(
     center = ("😸", ":smile_cat:"), 
     left = ("😿", ":crying_cat_face:"),
     right = ("😻", ":heart_eyes_cat:"),
@@ -351,8 +351,8 @@ key = CustomKey.flickSimpleInputAndLab(
 この関数では、ラベルと入力が同じ場合に指定を省略することができます。
 
 ```python
-key = CustomKey.flickSimpleInputAndLab(
-    center = ("あ", "あ゛"), 
+key = CustomKey.flickSimpleInputAndLabels(
+    center = ("あ", "あ゛"), å
     left = ("い", "い゛"),
     top = "ゔ",
     right = ("え", "え゛"),
