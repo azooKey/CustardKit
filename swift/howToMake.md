@@ -390,7 +390,7 @@ let key: CustomKey = .flickSimpleInputs(
 この関数では、ラベルと入力が同じ場合に指定を省略することができます。
 
 ```Swift
-let key: CustomKey = .flickSimpleInputAndLab(
+let key: CustomKey = .flickSimpleInputAndLabels(
     center = .init(label: "あ", input: "あ゛"), 
     left = .init(label: "い", input: "い゛"),
     top = "ゔ",
