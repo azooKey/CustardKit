@@ -300,10 +300,12 @@ public struct CustardInterface: Codable, Equatable, Sendable {
     public var keys: [CustardKeyPositionSpecifier: CustardInterfaceKey]
 
     /// in CustardKit v1, there were `key_style` value (`"pc_style"` or `"tenkey_style")`. Now they are just ignored.
+    package var legacyKeyStyle: LegacyCustardInterfaceStyle?
 }
 
 public extension CustardInterface {
     private enum CodingKeys: CodingKey {
+        case key_style
         case key_layout
         case keys
     }
@@ -395,10 +397,32 @@ public extension CustardInterface {
 
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.legacyKeyStyle = try container.decodeIfPresent(LegacyCustardInterfaceStyle.self, forKey: .key_style)
         self.keyLayout = try container.decode(CustardInterfaceLayout.self, forKey: .key_layout)
         let elements = try container.decode([Element].self, forKey: .keys)
         self.keys = elements.reduce(into: [:]) {dictionary, element in
             dictionary[element.specifier] = element.key
+        }
+
+        /// v2.0 migration
+        for (key, value) in self.keys {
+            if case .system(let systemKey) = value {
+                switch systemKey {
+                case ._deprecated_upperLower:
+                    self.keys[key] = switch self.legacyKeyStyle {
+                    case nil: .system(.tenkeyStyleUpperLower)
+                    case .tenkeyStyle: .system(.tenkeyStyleUpperLower)
+                    case .pcStyle: .system(.pcStyleUpperLower)
+                    }
+                case ._deprecated_nextCandidate:
+                    self.keys[key] = switch self.legacyKeyStyle {
+                    case nil: .system(.tenkeyStyleNextCandidate)
+                    case .tenkeyStyle: .system(.tenkeyStyleNextCandidate)
+                    case .pcStyle: .system(.pcStyleNextCandidate)
+                    }
+                default: break
+                }
+            }
         }
     }
 }
@@ -548,10 +572,14 @@ public enum CustardInterfaceSystemKey: Codable, Equatable, Hashable, Sendable {
     case enter
 
     /// - the upper_lower toggle key
-    case upperLower
+    case _deprecated_upperLower
+    case tenkeyStyleUpperLower
+    case pcStyleUpperLower
 
     /// - the "next candidate" key
-    case nextCandidate
+    case _deprecated_nextCandidate
+    case tenkeyStyleNextCandidate
+    case pcStyleNextCandidate
 
     /// custom keys.
     /// - flick 小ﾞﾟkey
@@ -575,7 +603,11 @@ public extension CustardInterfaceSystemKey {
         case change_keyboard
         case enter
         case upper_lower
+        case tenkey_style_upper_lower
+        case pc_style_upper_lower
         case next_candidate
+        case tenkey_style_next_candidate
+        case pc_style_next_candidate
         case flick_kogaki
         case flick_kutoten
         case flick_hira_tab
@@ -587,8 +619,12 @@ public extension CustardInterfaceSystemKey {
         switch self {
         case .changeKeyboard: return .change_keyboard
         case .enter: return .enter
-        case .upperLower: return .upper_lower
-        case .nextCandidate: return .next_candidate
+        case ._deprecated_upperLower: return .upper_lower
+        case .tenkeyStyleUpperLower: return .tenkey_style_upper_lower
+        case .pcStyleUpperLower: return .pc_style_upper_lower
+        case ._deprecated_nextCandidate: return .upper_lower
+        case .tenkeyStyleNextCandidate: return .tenkey_style_next_candidate
+        case .pcStyleNextCandidate: return .pc_style_next_candidate
         case .flickKogaki: return .flick_kogaki
         case .flickKutoten: return .flick_kutoten
         case .flickHiraTab: return .flick_hira_tab
@@ -611,9 +647,17 @@ public extension CustardInterfaceSystemKey {
         case .change_keyboard:
             self = .changeKeyboard
         case .upper_lower:
-            self = .upperLower
+            self = ._deprecated_upperLower
+        case .tenkey_style_upper_lower:
+            self = .tenkeyStyleUpperLower
+        case .pc_style_upper_lower:
+            self = .pcStyleUpperLower
         case .next_candidate:
-            self = .nextCandidate
+            self = ._deprecated_nextCandidate
+        case .tenkey_style_next_candidate:
+            self = .tenkeyStyleNextCandidate
+        case .pc_style_next_candidate:
+            self = .pcStyleNextCandidate
         case .flick_kogaki:
             self = .flickKogaki
         case .flick_kutoten:

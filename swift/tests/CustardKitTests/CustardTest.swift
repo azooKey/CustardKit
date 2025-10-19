@@ -19,7 +19,6 @@ final class CustardTest: XCTestCase {
                         "row_count": 1,
                         "column_count": 1,
                     },
-                    "key_style": "tenkey_style",
                     "keys": [
                         {
                             "specifier_type": "grid_fit",

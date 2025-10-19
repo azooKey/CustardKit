@@ -11,7 +11,6 @@ final class CustardInterfaceTest: XCTestCase {
                 "row_count": 3,
                 "column_count": 2,
             },
-            "key_style": "tenkey_style",
             "keys": [{
                 "specifier_type": "grid_fit",
                 "specifier": {
@@ -50,7 +49,6 @@ final class CustardInterfaceTest: XCTestCase {
                 "row_count": 7.5,
                 "column_count": 3.3,
             },
-            "key_style": "pc_style",
             "keys": [{
                 "specifier_type": "grid_scroll",
                 "specifier": {
