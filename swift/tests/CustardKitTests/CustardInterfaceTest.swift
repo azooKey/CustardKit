@@ -35,8 +35,7 @@ final class CustardInterfaceTest: XCTestCase {
             XCTAssertEqual(
                 CustardInterface.quickDecode(target: target),
                 .init(
-                    keyStyle: .tenkeyStyle,
-                    keyLayout: .gridFit(.init(rowCount: 3, columnCount: 2)),
+                    keyLayout: .gridFit(.init(horizontalKeyCapacity: 3, verticalKeyCapacity: 2)),
                     keys: [
                         .gridFit(.init(x: 1, y: 0)): .custom(.init(design: .init(label: .text("超弩級"), color: .normal), press_actions: [], longpress_actions: .none, variations: []))
                     ]
@@ -66,8 +65,7 @@ final class CustardInterfaceTest: XCTestCase {
             XCTAssertEqual(
                 CustardInterface.quickDecode(target: target),
                 .init(
-                    keyStyle: .pcStyle,
-                    keyLayout: .gridScroll(.init(direction: .horizontal, rowCount: 7.5, columnCount: 3.3)),
+                    keyLayout: .gridScroll(.init(direction: .horizontal, horizontalKeyCapacity: 7.5, verticalKeyCapacity: 3.3)),
                     keys: [
                         .gridScroll(1): .system(.changeKeyboard)
                     ]
@@ -79,7 +77,7 @@ final class CustardInterfaceTest: XCTestCase {
 
     func testEncode() {
         do {
-            let target = CustardInterface.init(keyStyle: .pcStyle, keyLayout: .gridScroll(.init(direction: .vertical, rowCount: 3, columnCount: 8)), keys: [.gridScroll(0): .custom(.flickDelete()), .gridScroll(1): .custom(.flickSpace())])
+            let target = CustardInterface.init(keyLayout: .gridScroll(.init(direction: .vertical, horizontalKeyCapacity: 3, verticalKeyCapacity: 8)), keys: [.gridScroll(0): .custom(.flickDelete()), .gridScroll(1): .custom(.flickSpace())])
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
     }

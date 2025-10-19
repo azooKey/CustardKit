@@ -59,8 +59,7 @@ extension Samples {
             input_style: .direct,
             metadata: .init(custard_version: .v1_0, display_name: "楔形文字"),
             interface: .init(
-                keyStyle: .tenkeyStyle,
-                keyLayout: .gridScroll(.init(direction: .vertical, rowCount: 8, columnCount: 4.2)),
+                keyLayout: .gridScroll(.init(direction: .vertical, horizontalKeyCapacity: 8, verticalKeyCapacity: 4.2)),
                 keys: cuneiforms_keys
             )
         )

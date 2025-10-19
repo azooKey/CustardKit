@@ -26,16 +26,10 @@ final class ConstantsTest: XCTestCase {
         XCTAssertEqual(CustardInputStyle.roman2kana.rawValue, "roman2kana")
     }
 
-    func testCustardInterfaceStyle() {
-        XCTAssertEqual(CustardInterfaceStyle.pcStyle.rawValue, "pc_style")
-        XCTAssertEqual(CustardInterfaceStyle.tenkeyStyle.rawValue, "tenkey_style")
-    }
-
     static var allTests = [
         ("testCustardVersion", testCustardVersion),
         ("testFlickDirection", testFlickDirection),
         ("testCustardLanguage", testCustardLanguage),
         ("testCustardInputStyle", testCustardInputStyle),
-        ("testCustardInterfaceStyle", testCustardInterfaceStyle)
     ]
 }

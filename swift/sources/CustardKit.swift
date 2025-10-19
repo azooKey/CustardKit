@@ -55,6 +55,7 @@ public enum CustardVersion: String, Codable, Sendable {
     case v1_0 = "1.0"
     case v1_1 = "1.1"
     case v1_2 = "1.2"
+    case v2_0 = "2.0"
 }
 
 public struct CustardMetadata: Codable, Equatable, Sendable {
@@ -109,18 +110,6 @@ extension Array where Element == Custard {
     }
 }
 
-/// - インターフェースのキーのスタイルです
-/// - style of keys
-public enum CustardInterfaceStyle: String, Codable, Sendable {
-    /// - フリック可能なキー
-    /// - flickable keys
-    case tenkeyStyle = "tenkey_style"
-
-    /// - 長押しで他の文字を選べるキー
-    /// - keys with variations
-    case pcStyle = "pc_style"
-}
-
 /// - インターフェースのレイアウトのスタイルです
 /// - style of layout
 public enum CustardInterfaceLayout: Codable, Equatable, Sendable {
@@ -137,6 +126,7 @@ public extension CustardInterfaceLayout {
     private enum CodingKeys: CodingKey {
         case type
         case row_count, column_count
+        case horizontal_key_capacity, vertical_key_capacity
         case direction
     }
     private enum ValueType: String, Codable {
@@ -149,50 +139,60 @@ public extension CustardInterfaceLayout {
         switch self {
         case let .gridFit(value):
             try container.encode(ValueType.grid_fit, forKey: .type)
-            try container.encode(value.rowCount, forKey: .row_count)
-            try container.encode(value.columnCount, forKey: .column_count)
+            try container.encode(value.horizontalKeyCapacity, forKey: .horizontal_key_capacity)
+            try container.encode(value.verticalKeyCapacity, forKey: .vertical_key_capacity)
         case let .gridScroll(value):
             try container.encode(ValueType.grid_scroll, forKey: .type)
             try container.encode(value.direction, forKey: .direction)
-            try container.encode(value.rowCount, forKey: .row_count)
-            try container.encode(value.columnCount, forKey: .column_count)
+            try container.encode(value.horizontalKeyCapacity, forKey: .horizontal_key_capacity)
+            try container.encode(value.verticalKeyCapacity, forKey: .vertical_key_capacity)
         }
     }
 
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let type = try container.decode(ValueType.self, forKey: .type)
-        let rowCount = try container.decode(Double.self, forKey: .row_count)
-        let columnCount = try container.decode(Double.self, forKey: .column_count)
+        let horizontalKeyCapacity = if let value = try container.decodeIfPresent(Double.self, forKey: .horizontal_key_capacity) {
+            value
+        } else {
+            // このケースではrow_countをデコード
+            try container.decode(Double.self, forKey: .row_count)
+        }
+        let verticalKeyCapacity = if let value = try container.decodeIfPresent(Double.self, forKey: .vertical_key_capacity) {
+            value
+        } else {
+            // このケースではcolumn_countをデコード
+            try container.decode(Double.self, forKey: .column_count)
+        }
         switch type {
         case .grid_fit:
-            self = .gridFit(.init(rowCount: Int(rowCount), columnCount: Int(columnCount)))
+            self = .gridFit(.init(horizontalKeyCapacity: Int(horizontalKeyCapacity), verticalKeyCapacity: Int(verticalKeyCapacity)))
         case .grid_scroll:
             let direction = try container.decode(CustardInterfaceLayoutScrollValue.ScrollDirection.self, forKey: .direction)
-            self = .gridScroll(.init(direction: direction, rowCount: rowCount, columnCount: columnCount))
+            self = .gridScroll(.init(direction: direction, horizontalKeyCapacity: horizontalKeyCapacity, verticalKeyCapacity: verticalKeyCapacity))
         }
     }
 }
 
 public struct CustardInterfaceLayoutGridValue: Equatable, Sendable {
-    public init(rowCount: Int, columnCount: Int) {
-        self.rowCount = rowCount
-        self.columnCount = columnCount
+    public init(horizontalKeyCapacity: Int, verticalKeyCapacity: Int) {
+        self.horizontalKeyCapacity = horizontalKeyCapacity
+        self.verticalKeyCapacity = verticalKeyCapacity
     }
 
     /// - 横方向に配置するキーの数
     /// - number of keys placed horizontally
-    public var rowCount: Int
+    public var horizontalKeyCapacity: Int
     /// - 縦方向に配置するキーの数
     /// - number of keys placed vertically
-    public var columnCount: Int
+    public var verticalKeyCapacity: Int
 }
 
 public struct CustardInterfaceLayoutScrollValue: Equatable, Sendable {
-    public init(direction: ScrollDirection, rowCount: Double, columnCount: Double) {
+    public init(direction: ScrollDirection, horizontalKeyCapacity: Double, verticalKeyCapacity: Double) {
         self.direction = direction
-        self.rowCount = rowCount
-        self.columnCount = columnCount
+        self.horizontalKeyCapacity = horizontalKeyCapacity
+        self.verticalKeyCapacity = verticalKeyCapacity
     }
 
     /// - スクロールの方向
@@ -201,11 +201,11 @@ public struct CustardInterfaceLayoutScrollValue: Equatable, Sendable {
 
     /// - 一列に配置するキーの数
     /// - number of keys in scroll normal direction
-    public var rowCount: Double
+    public var horizontalKeyCapacity: Double
 
     /// - 画面内に収まるスクロール方向のキーの数
     /// - number of keys in screen in scroll direction
-    public var columnCount: Double
+    public var verticalKeyCapacity: Double
 
     /// - direction of scroll
     public enum ScrollDirection: String, Codable, Sendable {
@@ -286,17 +286,10 @@ public extension GridScrollPositionSpecifier {
 /// - インターフェース
 /// - interface
 public struct CustardInterface: Codable, Equatable, Sendable {
-    public init(keyStyle: CustardInterfaceStyle, keyLayout: CustardInterfaceLayout, keys: [CustardKeyPositionSpecifier: CustardInterfaceKey]) {
-        self.keyStyle = keyStyle
+    public init(keyLayout: CustardInterfaceLayout, keys: [CustardKeyPositionSpecifier: CustardInterfaceKey]) {
         self.keyLayout = keyLayout
         self.keys = keys
     }
-
-    /// - キーのスタイル
-    /// - style of keys
-    /// - warning: Currently when you use gird scroll. layout, key style would be ignored.
-    public var keyStyle: CustardInterfaceStyle
-
     /// - キーのレイアウト
     /// - layout of keys
     public var keyLayout: CustardInterfaceLayout
@@ -305,11 +298,12 @@ public struct CustardInterface: Codable, Equatable, Sendable {
     /// - dictionary of keys
     /// - warning: You must use specifiers consistent with key layout. When you use inconsistent one, it would be ignored.
     public var keys: [CustardKeyPositionSpecifier: CustardInterfaceKey]
+
+    /// in CustardKit v1, there were `key_style` value (`"pc_style"` or `"tenkey_style")`. Now they are just ignored.
 }
 
 public extension CustardInterface {
     private enum CodingKeys: CodingKey {
-        case key_style
         case key_layout
         case keys
     }
@@ -394,7 +388,6 @@ public extension CustardInterface {
 
     func encode(to encoder: any Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(keyStyle, forKey: .key_style)
         try container.encode(keyLayout, forKey: .key_layout)
         let elements = self.keys.map {Element(specifier: $0.key, key: $0.value)}
         try container.encode(elements, forKey: .keys)
@@ -402,7 +395,6 @@ public extension CustardInterface {
 
     init(from decoder: any Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
-        self.keyStyle = try container.decode(CustardInterfaceStyle.self, forKey: .key_style)
         self.keyLayout = try container.decode(CustardInterfaceLayout.self, forKey: .key_layout)
         let elements = try container.decode([Element].self, forKey: .keys)
         self.keys = elements.reduce(into: [:]) {dictionary, element in

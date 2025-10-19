@@ -61,8 +61,7 @@ extension Samples {
             input_style: .direct,
             metadata: .init(custard_version: .v1_0, display_name: "装飾数字"),
             interface: .init(
-                keyStyle: .pcStyle,
-                keyLayout: .gridFit(.init(rowCount: 10, columnCount: 5)),
+                keyLayout: .gridFit(.init(horizontalKeyCapacity: 10, verticalKeyCapacity: 5)),
                 keys: numberkeys
             )
         )
