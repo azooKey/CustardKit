@@ -23,7 +23,7 @@ extension Samples {
         for i in numbers.indices {
             for j in numbers[i].indices {
                 let (x, y) = (j, i)
-                numberkeys[.gridFit(.init(x: x, y: y))] = .custom(pcStyleInputKeys(String(numbers[i][j])))
+                numberkeys[.gridFit(.init(x: Double(x), y: Double(y)))] = .custom(pcStyleInputKeys(String(numbers[i][j])))
             }
         }
 
