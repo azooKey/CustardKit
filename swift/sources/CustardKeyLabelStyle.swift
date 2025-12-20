@@ -8,10 +8,10 @@ public enum CustardKeyLabelStyle: Codable, Equatable, Hashable, Sendable {
 }
 
 public struct CustardKeyDirectionalLabel: Codable, Equatable, Hashable, Sendable {
-    var left: String?
-    var top: String?
-    var right: String?
-    var bottom: String?
+    public var left: String?
+    public var top: String?
+    public var right: String?
+    public var bottom: String?
 }
 
 public extension CustardKeyLabelStyle {
