@@ -4,6 +4,14 @@ public enum CustardKeyLabelStyle: Codable, Equatable, Hashable, Sendable {
     case text(String)
     case systemImage(String)
     case mainAndSub(String, String)
+    case mainAndDirections(String, CustardKeyDirectionalLabel)
+}
+
+public struct CustardKeyDirectionalLabel: Codable, Equatable, Hashable, Sendable {
+    var left: String?
+    var top: String?
+    var right: String?
+    var bottom: String?
 }
 
 public extension CustardKeyLabelStyle {
@@ -13,12 +21,14 @@ public extension CustardKeyLabelStyle {
         case type
         case main
         case sub
+        case directions
     }
 
     private enum ValueType: String, Codable {
         case text
         case system_image
         case main_and_sub
+        case main_and_directions
     }
 
     func encode(to encoder: any Encoder) throws {
@@ -32,6 +42,10 @@ public extension CustardKeyLabelStyle {
             try container.encode(ValueType.main_and_sub, forKey: .type)
             try container.encode(main, forKey: .main)
             try container.encode(sub, forKey: .sub)
+        case let .mainAndDirections(main, directions):
+            try container.encode(ValueType.main_and_directions, forKey: .type)
+            try container.encode(main, forKey: .main)
+            try container.encode(directions, forKey: .directions)
         }
     }
 
@@ -62,6 +76,16 @@ public extension CustardKeyLabelStyle {
                     forKey: .sub
                 )
                 self = .mainAndSub(main, sub)
+            case .main_and_directions:
+                let main = try container.decode(
+                    String.self,
+                    forKey: .main
+                )
+                let directions = try container.decode(
+                    CustardKeyDirectionalLabel.self,
+                    forKey: .directions
+                )
+                self = .mainAndDirections(main, directions)
             }
             return
         }

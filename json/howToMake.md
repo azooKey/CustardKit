@@ -58,6 +58,7 @@
 | ----------------- | ------------------------------------------------------------ |
 | text              | `"text"`に指定した文字をラベルとして表示します。                       |
 | main_and_sub      | `"main"`に指定した1文字を1行目に大きめに、`"sub"`に指定した文字列を2行目に小さめに表示します。 |
+| main_and_directions| `"main"`に指定した文字を中心に、`"directions"`に`{"left": "...", "top": "..."}`のように指定したラベルを4方向に表示します。 |
 | system_image      | `"system_image"`に指定した画像をラベルとして表示します。指定できる値の一例は以下の通りです。<br />この画像は[SFSymbols](https://developer.apple.com/sf-symbols/)から取得されます。 |
 
 <img src="../resource/symbols.png" style="zoom:15%;" />

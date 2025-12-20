@@ -45,6 +45,12 @@ final class CustardKeyLabelStyleTest: XCTestCase {
             """
             XCTAssertEqual(CustardKeyLabelStyle.quickDecode(target: target), .mainAndSub("1", "☆♡◇"))
         }
+        do {
+            let target = """
+            {"type": "main_and_directions", "main": "1", "directions": {"left": "2", "top": "3"}}
+            """
+            XCTAssertEqual(CustardKeyLabelStyle.quickDecode(target: target), .mainAndDirections("1", .init(left: "2", top: "3")))
+        }
     }
 
     func testEncode() {
