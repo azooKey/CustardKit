@@ -49,6 +49,7 @@ design: .init(label: .text("@#/&_"), color: .normal)
 | -------------------- | ------------------------------------------------------------ |
 | .text(String)        | 指定した文字をラベルとして表示します。                       |
 | .mainAndSub(String, String) | 1つ目に指定した1文字を1行目に大きめに、2つ目に指定した文字を2行目に小さめに表示します。 |
+| .mainAndDirections(String, Directions)| `main`に指定した文字を中心に、Directionsに指定したラベルを4方向に表示します。 |
 | .systemImage(String) | 指定した名前の画像をラベルとして表示します。指定できる値の一例は以下の通りです。<br />この画像は[SFSymbols](https://developer.apple.com/sf-symbols/)から取得されます。 |
 
 <img src="../resource/symbols.png" style="zoom:15%;" />
