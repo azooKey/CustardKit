@@ -1,6 +1,0 @@
-language: python
-python:
-  - "3.9"
-script:
-  - cd python
-  - python3 -m unittest

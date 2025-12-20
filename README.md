@@ -8,11 +8,9 @@ azookeyのカスタムタブのデータファイルを作成するための補�
 現在以下を含みます。
 
 * Swift向け生成ツール
-* Python向け生成ツール
-* JSON/Swift/Python用ドキュメント
+* JSON/Swiftドキュメント
   * [JSON用ドキュメント](./json/howToMake.md)
   * [Swift用ドキュメント](./swift/howToMake.md)
-  * [Python用ドキュメント](./python/howToMake.md)
 
 ## Examples
 
