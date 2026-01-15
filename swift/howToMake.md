@@ -223,7 +223,7 @@ variations: [
 ```Swift
 interface: .init(
     keyStyle: .tenkeyStyle,
-    keyLayout: .gridFit(.init(rowCount: 5, columnCount: 4)),
+    keyLayout: .gridFit(.init(horizontalKeyCapacity: 5, verticalKeyCapacity: 4)),
     keys: [
          .gridFit(.init(x: 0, y: 1)): .custom(キーのデータ)
     ]
@@ -236,8 +236,8 @@ interface: .init(
 
 | Value       | Associated Value                                             | 説明                                                         |
 | ----------- | ------------------------------------------------------------ | ------------------------------------------------------------ |
-| .gridFit    | rowCount: int<br />columnCount: int                          | 画面全体に収まるように格子状にキーを配置するレイアウトです。横にrowCount個、縦にcolumnCount個のキーを並べます。 |
-| .gridScroll | direction: str<br />rowCount: double<br />columnCount: double | 画面をスクロールできる状態にして格子状にキーを配置するレイアウトです。<br />スクロールの方向を示すdirectionには`.vertical`または`.horizontal`を指定し、rowCountとcolumnCountを指定します。<br />スクロール方向に垂直な向きのキー数は切り捨てて整数として利用されますが、平行な向きのキー数は小数のまま用います。<br />このレイアウトが指定されている場合、キーの`variations`は一切無効になります。 |
+| .gridFit    | horizontalKeyCapacity: int<br />verticalKeyCapacity: int                          | 画面全体に収まるように格子状にキーを配置するレイアウトです。横にhorizontalKeyCapacity個、縦にverticalKeyCapacity個のキーを並べます。 |
+| .gridScroll | direction: str<br />horizontalKeyCapacity: double<br />verticalKeyCapacity: double | 画面をスクロールできる状態にして格子状にキーを配置するレイアウトです。<br />スクロールの方向を示すdirectionには`.vertical`または`.horizontal`を指定し、horizontalKeyCapacityとverticalKeyCapacityを指定します。<br />スクロール方向に垂直な向きのキー数は切り捨てて整数として利用されますが、平行な向きのキー数は小数のまま用います。<br />このレイアウトが指定されている場合、キーの`variations`は一切無効になります。 |
 
 ### スタイル
 
@@ -483,7 +483,7 @@ let hieroglyphs_custard = Custard(
     metadata: .init(custard_version: .v1_0, display_name: "ヒエログリフ"),
     interface: .init(
         keyStyle: .tenkeyStyle,
-        keyLayout: .gridScroll(.init(direction: .vertical, rowCount: 8, columnCount: 4.2)),
+        keyLayout: .gridScroll(.init(direction: .vertical, horizontalKeyCapacity: 8, verticalKeyCapacity: 4.2)),
         keys: hieroglyphs_keys
     )
 )

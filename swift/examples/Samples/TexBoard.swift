@@ -9,8 +9,7 @@ extension Samples {
             input_style: .direct,
             metadata: .init(custard_version: .v1_0, display_name: "tex"),
             interface: .init(
-                keyStyle: .tenkeyStyle,
-                keyLayout: .gridFit(.init(rowCount: 5, columnCount: 4)),
+                keyLayout: .gridFit(.init(horizontalKeyCapacity: 5, verticalKeyCapacity: 4)),
                 keys: [
                     .gridFit(.init(x: 0, y: 0)): .custom(
                         .init(

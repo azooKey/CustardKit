@@ -11,7 +11,7 @@ final class CustardInterfaceLayoutTest: XCTestCase {
                 "column_count": 4
             }
             """
-            XCTAssertEqual(CustardInterfaceLayout.quickDecode(target: target), .gridFit(.init(rowCount: 5, columnCount: 4)))
+            XCTAssertEqual(CustardInterfaceLayout.quickDecode(target: target), .gridFit(.init(horizontalKeyCapacity: 5, verticalKeyCapacity: 4)))
         }
         do {
             let target = """
@@ -22,7 +22,7 @@ final class CustardInterfaceLayoutTest: XCTestCase {
                 "column_count": 4.9
             }
             """
-            XCTAssertEqual(CustardInterfaceLayout.quickDecode(target: target), .gridScroll(.init(direction: .vertical, rowCount: 8, columnCount: 4.9)))
+            XCTAssertEqual(CustardInterfaceLayout.quickDecode(target: target), .gridScroll(.init(direction: .vertical, horizontalKeyCapacity: 8, verticalKeyCapacity: 4.9)))
         }
         do {
             let target = """
@@ -33,21 +33,21 @@ final class CustardInterfaceLayoutTest: XCTestCase {
                 "column_count": 3.1
             }
             """
-            XCTAssertEqual(CustardInterfaceLayout.quickDecode(target: target), .gridFit(.init(rowCount: 4, columnCount: 3)))
+            XCTAssertEqual(CustardInterfaceLayout.quickDecode(target: target), .gridFit(.init(horizontalKeyCapacity: 4, verticalKeyCapacity: 3)))
         }
     }
 
     func testEncode() {
         do {
-            let target = CustardInterfaceLayout.gridFit(.init(rowCount: 3, columnCount: 5))
+            let target = CustardInterfaceLayout.gridFit(.init(horizontalKeyCapacity: 3, verticalKeyCapacity: 5))
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
         do {
-            let target = CustardInterfaceLayout.gridScroll(.init(direction: .horizontal, rowCount: 3.1, columnCount: 2.9))
+            let target = CustardInterfaceLayout.gridScroll(.init(direction: .horizontal, horizontalKeyCapacity: 3.1, verticalKeyCapacity: 2.9))
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
         do {
-            let target = CustardInterfaceLayout.gridScroll(.init(direction: .vertical, rowCount: 10, columnCount: 1))
+            let target = CustardInterfaceLayout.gridScroll(.init(direction: .vertical, horizontalKeyCapacity: 10, verticalKeyCapacity: 1))
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
     }

@@ -19,7 +19,6 @@ final class CustardTest: XCTestCase {
                         "row_count": 1,
                         "column_count": 1,
                     },
-                    "key_style": "tenkey_style",
                     "keys": [
                         {
                             "specifier_type": "grid_fit",
@@ -45,7 +44,7 @@ final class CustardTest: XCTestCase {
                     language: .ja_JP,
                     input_style: .direct,
                     metadata: .init(custard_version: .v1_0, display_name: "翡翠のまち"),
-                    interface: .init(keyStyle: .tenkeyStyle, keyLayout: .gridFit(.init(rowCount: 1, columnCount: 1)), keys: [.gridFit(.init(x: 0, y: 0)): .system(.enter)])
+                    interface: .init(keyLayout: .gridFit(.init(horizontalKeyCapacity: 1, verticalKeyCapacity: 1)), keys: [.gridFit(.init(x: 0, y: 0)): .system(.enter)])
                 )
             )
         }
@@ -108,8 +107,7 @@ final class CustardTest: XCTestCase {
                 input_style: .direct,
                 metadata: .init(custard_version: .v1_0, display_name: "楔形文字"),
                 interface: .init(
-                    keyStyle: .tenkeyStyle,
-                    keyLayout: .gridScroll(.init(direction: .vertical, rowCount: 8, columnCount: 4.2)),
+                    keyLayout: .gridScroll(.init(direction: .vertical, horizontalKeyCapacity: 8, verticalKeyCapacity: 4.2)),
                     keys: cuneiforms_keys
                 )
             )

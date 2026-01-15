@@ -9,8 +9,7 @@ extension Samples {
             input_style: .direct,
             metadata: .init(custard_version: .v1_0, display_name: "markdown"),
             interface: .init(
-                keyStyle: .tenkeyStyle,
-                keyLayout: .gridFit(.init(rowCount: 6, columnCount: 4)),
+                keyLayout: .gridFit(.init(horizontalKeyCapacity: 6, verticalKeyCapacity: 4)),
                 keys: [
                     .gridFit(.init(x: 0, y: 0)): .system(.flickStar123Tab),
                     .gridFit(.init(x: 0, y: 1)): .system(.flickAbcTab),
