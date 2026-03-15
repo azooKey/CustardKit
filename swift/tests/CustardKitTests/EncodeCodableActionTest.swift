@@ -10,6 +10,11 @@ final class EncodeCodableActionTest: XCTestCase {
         XCTAssertEqual(CodableActionData.input("\u{FFFFE}").quickEncodeDecode(), .input("\u{FFFFE}"))
     }
 
+    func testEncodeDirectInput() {
+        XCTAssertEqual(CodableActionData.directInput("😆").quickEncodeDecode(), .directInput("😆"))
+        XCTAssertEqual(CodableActionData.directInput("佐藤さん").quickEncodeDecode(), .directInput("佐藤さん"))
+    }
+
     func testEncodeReplaceLastCharacters() {
         XCTAssertEqual(CodableActionData.replaceLastCharacters([:]).quickEncodeDecode(), .replaceLastCharacters([:]))
         let target: CodableActionData = .replaceLastCharacters([
@@ -79,16 +84,4 @@ final class EncodeCodableActionTest: XCTestCase {
         XCTAssertEqual(CodableActionData.toggleCapsLockState.quickEncodeDecode(), .toggleCapsLockState)
         XCTAssertEqual(CodableActionData.dismissKeyboard.quickEncodeDecode(), .dismissKeyboard)
     }
-
-    static var allTests = [
-        ("testEncodeInput", testEncodeInput),
-        ("testEncodeDelete", testEncodeDelete),
-        ("testEncodeReplaceLastCharacters", testEncodeReplaceLastCharacters),
-        ("testEncodeSmartDelete", testEncodeSmartDelete),
-        ("testEncodeMoveCursor", testEncodeMoveCursor),
-        ("testEncodeSmartMoveCursor", testEncodeSmartMoveCursor),
-        ("testEncodeMoveTab", testEncodeMoveTab),
-        ("testEncodeCompleteCharacterForm", testEncodeCompleteCharacterForm),
-        ("testEncodeNoArgumentActions", testEncodeNoArgumentActions)
-    ]
 }

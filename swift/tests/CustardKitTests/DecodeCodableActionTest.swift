@@ -25,6 +25,29 @@ final class DecodeCodableActionTest: XCTestCase {
         }
     }
 
+    func testDecodeDirectInput() {
+        do {
+            let target = """
+            {
+                "type": "direct_input",
+                "text": "佐藤さんまたは鈴木さんが対応します。"
+            }
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, .directInput("佐藤さんまたは鈴木さんが対応します。"))
+        }
+        do {
+            let target = """
+            {
+                "type": "direct_input",
+                "text": 42
+            }
+            """
+            let decoded = CodableActionData.quickDecode(target: target)
+            XCTAssertEqual(decoded, nil)
+        }
+    }
+
     func testDecodeReplaceLastCharacters() {
         do {
             let target = """
@@ -325,16 +348,4 @@ final class DecodeCodableActionTest: XCTestCase {
             XCTAssertEqual(decoded, .moveTab(.system(.emoji_tab)))
         }
     }
-
-    static var allTests = [
-        ("testDecodeInput", testDecodeInput),
-        ("testDecodeDelete", testDecodeDelete),
-        ("testDecodeReplaceLastCharacters", testDecodeReplaceLastCharacters),
-        ("testDecodeSmartDelete", testDecodeSmartDelete),
-        ("testDecodeMoveCursor", testDecodeMoveCursor),
-        ("testDecodeSmartMoveCursor", testDecodeSmartMoveCursor),
-        ("testDecodeMoveTab", testDecodeMoveTab),
-        ("testDecodeCompleteCharacterForm", testDecodeCompleteCharacterForm),
-        ("testDecodeNoArgumentActions", testDecodeNoArgumentActions)
-    ]
 }

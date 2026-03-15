@@ -152,7 +152,7 @@ public struct ReplaceBehavior: Hashable, Sendable {
         self.type = type
         self.fallbacks = fallbacks
     }
-    
+
     public static let `default` = Self(type: .default, fallbacks: [])
     public enum ReplaceType: String, Codable, Hashable, Sendable {
         /// デフォルト。
@@ -187,6 +187,9 @@ public enum CharacterForm: String, Codable, Hashable, Sendable {
 public enum CodableActionData: Codable, Hashable, Sendable {
     /// - input action specified character
     case input(String)
+
+    /// - input text directly without joining the current composition
+    case directInput(String)
 
     /// - input action specified character
     /// - note: WIP. This action can be removed at any time.
@@ -263,6 +266,7 @@ public extension CodableActionData {
     }
 
     private enum ValueType: String, Codable {
+        case direct_input
         case input
         case paste
         case replace_default
@@ -288,6 +292,7 @@ public extension CodableActionData {
 
     private var key: ValueType {
         switch self {
+        case .directInput: return .direct_input
         case .selectCandidate: return .select_candidate
         case .completeCharacterForm: return .complete_character_form
         case .complete: return .complete
@@ -329,7 +334,7 @@ public extension CodableActionData {
             }
             switch tab {
             case let .system(value as Encodable),
-                let .custom(value as Encodable):
+                 let .custom(value as Encodable):
                 try value.containerEncode(container: &container, key: .identifier)
             }
         }
@@ -352,6 +357,8 @@ public extension CodableActionData {
         try container.encode(self.key, forKey: .type)
         switch self {
         case let .input(value):
+            try container.encode(value, forKey: .text)
+        case let .directInput(value):
             try container.encode(value, forKey: .text)
         case let .replaceDefault(value):
             // デフォルト値以外の場合のみ明示的にエンコード
@@ -385,6 +392,9 @@ public extension CodableActionData {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let valueType = try container.decode(ValueType.self, forKey: .type)
         switch valueType {
+        case .direct_input:
+            let value = try container.decode(String.self, forKey: .text)
+            self = .directInput(value)
         case .input:
             let value = try container.decode(String.self, forKey: .text)
             self = .input(value)
@@ -459,19 +469,19 @@ public struct CodableLongpressActionData: Codable, Equatable, Hashable, Sendable
     public var duration: LongpressDuration
     public var start: [CodableActionData]
     public var `repeat`: [CodableActionData]
-    
+
     private enum CodingKeys: CodingKey {
         case duration
         case start
         case `repeat`
     }
-    
+
     public init(from decoder: any Decoder) throws {
         let container: KeyedDecodingContainer<CodableLongpressActionData.CodingKeys> = try decoder.container(keyedBy: CodableLongpressActionData.CodingKeys.self)
-        
+
         self.duration = try container.decodeIfPresent(CodableLongpressActionData.LongpressDuration.self, forKey: CodableLongpressActionData.CodingKeys.duration) ?? .normal
         self.start = try container.decode([CodableActionData].self, forKey: CodableLongpressActionData.CodingKeys.start)
         self.repeat = try container.decode([CodableActionData].self, forKey: CodableLongpressActionData.CodingKeys.repeat)
-        
+
     }
 }
