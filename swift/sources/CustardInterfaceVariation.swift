@@ -88,4 +88,3 @@ public struct CustardInterfaceVariationKey: Codable, Equatable, Hashable, Sendab
     /// - actions done when you 'long select' this variation, like long-flick. actions are done in order.
     public var longpress_actions: CodableLongpressActionData
 }
-

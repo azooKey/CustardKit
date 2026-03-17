@@ -22,8 +22,4 @@ final class CustardInterfaceSystemKeyTest: XCTestCase {
         XCTAssertEqual(CustardInterfaceSystemKey.enter.quickEncodeDecode(), .enter)
     }
 
-    static var allTests = [
-        ("testDecode", testDecode),
-        ("testEncode", testEncode)
-    ]
 }

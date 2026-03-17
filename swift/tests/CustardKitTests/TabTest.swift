@@ -8,7 +8,4 @@ final class TabDataTest: XCTestCase {
         XCTAssertEqual(TabData.SystemTab.last_tab.rawValue, "last_tab")
     }
 
-    static var allTests = [
-        ("testSystemTab", testSystemTab)
-    ]
 }

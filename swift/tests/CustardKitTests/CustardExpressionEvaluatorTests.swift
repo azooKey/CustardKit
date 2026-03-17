@@ -108,7 +108,6 @@ final class CustardExpressionEvaluatorTests: XCTestCase {
             let tokens = tokenizer.tokenize(expression: "(not(toggle1) and toggle2) or (toggle1 and not(toggle2))")
             let compiledExpression = try compiler.compile(tokens: tokens)
             XCTAssertEqual(try evaluator.evaluate(compiledExpression: compiledExpression), .bool(true))
-
         }
     }
 }

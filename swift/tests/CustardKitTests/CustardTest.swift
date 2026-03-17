@@ -117,8 +117,4 @@ final class CustardTest: XCTestCase {
         }
     }
 
-    static var allTests = [
-        ("testDecode", testDecode),
-        ("testEncode", testEncode)
-    ]
 }

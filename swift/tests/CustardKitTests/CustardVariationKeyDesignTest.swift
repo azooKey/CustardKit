@@ -27,9 +27,4 @@ final class CustardVariationKeyDesignTest: XCTestCase {
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
     }
-
-    static var allTests = [
-        ("testDecode", testDecode),
-        ("testEncode", testEncode)
-    ]
 }

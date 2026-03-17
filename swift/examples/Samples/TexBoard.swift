@@ -117,47 +117,47 @@ extension Samples {
                         )
                     ),
 
-                        .gridFit(.init(x: 2, y: 1)): .custom(
-                            .init(
-                                design: .init(label: .text("•±×∓÷"), color: .normal),
-                                press_actions: [.input("\\cdot ")],
-                                longpress_actions: .none,
-                                variations: [
-                                    .init(
-                                        type: .flickVariation(.left),
-                                        key: .init(
-                                            design: .init(label: .text("±")),
-                                            press_actions: [.input("\\pm ")],
-                                            longpress_actions: .none
-                                        )
-                                    ),
-                                    .init(
-                                        type: .flickVariation(.top),
-                                        key: .init(
-                                            design: .init(label: .text("×")),
-                                            press_actions: [.input("\\times ")],
-                                            longpress_actions: .none
-                                        )
-                                    ),
-                                    .init(
-                                        type: .flickVariation(.right),
-                                        key: .init(
-                                            design: .init(label: .text("∓")),
-                                            press_actions: [.input("\\mp ")],
-                                            longpress_actions: .none
-                                        )
-                                    ),
-                                    .init(
-                                        type: .flickVariation(.bottom),
-                                        key: .init(
-                                            design: .init(label: .text("±")),
-                                            press_actions: [.input("\\div ")],
-                                            longpress_actions: .none
-                                        )
+                    .gridFit(.init(x: 2, y: 1)): .custom(
+                        .init(
+                            design: .init(label: .text("•±×∓÷"), color: .normal),
+                            press_actions: [.input("\\cdot ")],
+                            longpress_actions: .none,
+                            variations: [
+                                .init(
+                                    type: .flickVariation(.left),
+                                    key: .init(
+                                        design: .init(label: .text("±")),
+                                        press_actions: [.input("\\pm ")],
+                                        longpress_actions: .none
                                     )
-                                ]
-                            )
-                        ),
+                                ),
+                                .init(
+                                    type: .flickVariation(.top),
+                                    key: .init(
+                                        design: .init(label: .text("×")),
+                                        press_actions: [.input("\\times ")],
+                                        longpress_actions: .none
+                                    )
+                                ),
+                                .init(
+                                    type: .flickVariation(.right),
+                                    key: .init(
+                                        design: .init(label: .text("∓")),
+                                        press_actions: [.input("\\mp ")],
+                                        longpress_actions: .none
+                                    )
+                                ),
+                                .init(
+                                    type: .flickVariation(.bottom),
+                                    key: .init(
+                                        design: .init(label: .text("±")),
+                                        press_actions: [.input("\\div ")],
+                                        longpress_actions: .none
+                                    )
+                                )
+                            ]
+                        )
+                    ),
                     .gridFit(.init(x: 3, y: 1)): .custom(
                         .init(
                             design: .init(label: .text("{}()[]"), color: .normal),

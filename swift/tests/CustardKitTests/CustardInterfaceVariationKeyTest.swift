@@ -38,8 +38,4 @@ final class CustardInterfaceVariationKeyTest: XCTestCase {
         }
     }
 
-    static var allTests = [
-        ("testDecode", testDecode),
-        ("testEncode", testEncode)
-    ]
 }
