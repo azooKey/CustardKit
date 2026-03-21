@@ -49,9 +49,4 @@ final class CodableLongpressActionTest: XCTestCase {
         XCTAssertEqual(target, CodableLongpressActionData.init(start: [], repeat: []))
     }
 
-    static var allTests = [
-        ("testDecodeLongpressAction", testDecodeLongpressAction),
-        ("testEncodeLongpressAction", testEncodeLongpressAction),
-        ("testStaticValue", testStaticValue)
-    ]
 }

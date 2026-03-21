@@ -36,7 +36,6 @@ public enum FunctionType: Sendable {
     }
 }
 
-
 public enum Token: Sendable, Equatable {
     case stringLiteral(String)
     case boolLiteral(Bool)

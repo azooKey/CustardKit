@@ -31,11 +31,4 @@ final class ConstantsTest: XCTestCase {
         XCTAssertEqual(CustardInterfaceStyle.tenkeyStyle.rawValue, "tenkey_style")
     }
 
-    static var allTests = [
-        ("testCustardVersion", testCustardVersion),
-        ("testFlickDirection", testFlickDirection),
-        ("testCustardLanguage", testCustardLanguage),
-        ("testCustardInputStyle", testCustardInputStyle),
-        ("testCustardInterfaceStyle", testCustardInterfaceStyle)
-    ]
 }

@@ -127,12 +127,4 @@ final class CustardInterfaceCustomKeyTest: XCTestCase {
             XCTAssertEqual(target.variations[2].key.longpress_actions, .none)
         }
     }
-
-    static var allTests = [
-        ("testDecode", testDecode),
-        ("testEncode", testEncode),
-        ("testStaticKeys", testStaticKeys),
-        ("testSimpleInputArgument", testSimpleInputArgument),
-        ("testFlickSimpleInputs", testFlickSimpleInputs)
-    ]
 }

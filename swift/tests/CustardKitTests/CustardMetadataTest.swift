@@ -25,8 +25,4 @@ final class CustardMetadataTest: XCTestCase {
         }
     }
 
-    static var allTests = [
-        ("testDecode", testDecode),
-        ("testEncode", testEncode)
-    ]
 }

@@ -51,9 +51,4 @@ final class CustardInterfaceLayoutTest: XCTestCase {
             XCTAssertEqual(target.quickEncodeDecode(), target)
         }
     }
-
-    static var allTests = [
-        ("testDecode", testDecode),
-        ("testEncode", testEncode)
-    ]
 }

@@ -92,6 +92,7 @@ azooKeyでは`"input"`の他にいくつかの動作を行うことができま�
 | 識別子                  | 項目                               | 挙動                                                         |
 | :---------------------- | :--------------------------------- | :----------------------------------------------------------- |
 | input                   | text: str                          | 引数textを入力します                                         |
+| direct_input            | text: str                          | 変換中のテキストがあれば暗黙に確定してから、引数textを直接入力します。 |
 | delete                  | count: int                         | (countの絶対値)文字を削除します。負の値が指定されている場合は文末方向に削除します。 |
 | move_cursor             | count: int                         | (countの絶対値)文字分カーソルを移動します。負の値が指定されている場合は文頭方向に移動します。 |
 | move_tab                | tab_type: str<br />identifier: str | identifierで指定したタブに移動します。tab_typeが`"system"`の場合はazooKeyが標準で搭載しているタブに移動し、`"custom"`の場合はidentifierを持ったカスタムタブに移動します。システムタブとして指定できる値は後に記述します。 |
@@ -514,4 +515,3 @@ SwiftまたはPythonでファイルを生成するには、以下のドキュメ
 
 [^2]: ここではpc_styleではなくqwertyと呼んでいます。これはこのタブの配列がqwertyであるからです。
 [^3]:  ここではqwerty_variationあるいはpc_style_variationではなくlongpress_variationと呼んでいます。variationがそれが現れる条件となる操作によって分類されるからです。
-
